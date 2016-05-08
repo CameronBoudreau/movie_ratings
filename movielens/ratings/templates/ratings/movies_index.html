@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Movies Index</title>
+    </head>
+    <body>
+        <h1>You are viewing the full list of movies.</h1>
+        <h3>If you want to see more information on a movie's ratings, simply click its title.</h3>
+        <span>
+            <a href='http://127.0.0.1:8000/ratings/top/'><button>Top Rated Movies</button></a>
+        </span>
+        <span>
+            <a href='http://127.0.0.1:8000/ratings/raters/'><button>User Information</button></a>
+        </span>
+        <p></p>
+        <div>
+            <table border=1>
+                <tr>
+                    {% for header in columns %}
+                    <td><b>{{ header }}</b></td>
+                    {% endfor %}
+                </tr>
+                {% for movie in movies %}
+                <tr>
+                    <td>{{ movie.title }}</td>
+                    <td>{{ movie.release }}</td>
+                    <td>{{ movie.avg_rating }}</td>
+                    <td>{{ movie.total_ratings }}</td>
+                    <td><a href={{ movie.url }}><button>IMDB</button></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>

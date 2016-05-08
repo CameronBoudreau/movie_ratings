@@ -1,8 +1,24 @@
 from django.http import HttpResponse
+from django.shortcuts import render
+from .models import Movie, Rater, Rating
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the ratings index.")
+def index(request, name):
+    movies = Movie.objects.all().order_by('title')
+    movie_cols = ['Title', 'Release Date', 'Average Rating', 'Total Ratings',
+                  'URL']
+    top_rated = Movie.get_top()
+    if name == 'movies':
+        context = {'movies': movies, 'columns': movie_cols}
+        return render(request, 'ratings/movies_index.html', context)
+    elif name == 'raters':
+        pass
+    elif name == 'top':
+        movie_cols = ['Average Rating', 'Title', 'Release Date', 'Total Ratings', 'URL']
+        context = {'top_rated': top_rated, 'columns': movie_cols}
+        return render(request, 'ratings/top_rated.html', context)
+    else:
+        return render(request, 'ratings/redirect.html')
 
 
 def movie_index(request):

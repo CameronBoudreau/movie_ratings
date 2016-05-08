@@ -15,6 +15,7 @@ def import_ratings(apps, schema_editor):
             rating = Rating(rater=rater, movie=movie, score=row[2])
             rating.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
