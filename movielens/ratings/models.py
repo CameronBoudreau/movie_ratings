@@ -36,17 +36,30 @@ class Rater(models.Model):
     age = models.IntegerField(default=0)
     sex = models.CharField(max_length=200, default="-")
     occupation = models.CharField(max_length=200, default="Not given")
+    avg_rating = models.DecimalField(decimal_places=2, max_digits=3, default=0)
+    total_ratings = models.IntegerField(default=0)
 
     def __str__(self):
         return ("{}: {} {} {}".format(self.id, self.age, self.sex,
                                       self.occupation))
 
+    def get_average_rating(self):
+        return Rating.objects.filter(rater_id=self.id).aggregate(Avg('score'))
+
+    def get_total(self):
+        return Rating.objects.filter(rater_id=self.id).aggregate(Count('score'))
+
 
 class Rating(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie_name = models.CharField(max_length=200)
     score = models.IntegerField(default=0)
     rater = models.ForeignKey(Rater, on_delete=models.CASCADE)
 
     def __str__(self):
         return ("{}: {} by {}".format(self.movie,
                                       self.score, self.rater))
+
+    def get_movie_name(self):
+        movie = Movie.objects.get(id=self.movie_id)
+        return movie.title

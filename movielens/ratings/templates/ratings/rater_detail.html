@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>{{ movie }}</title>
     </head>
-    <body align= 'center'>
+    <body align='center'>
         <div>
             <span>
                 <a href='http://127.0.0.1:8000/ratings/'><button style="height:30px;width:150px"><font size='3'>Home</font></button></a>
@@ -20,45 +20,48 @@
             </span>
         </div>
         <hr>
+        <h3 align='center'>You are viewing the full details for: </h3>
+        <h1 align='center'><b><u>User {{ rater.id }}</u></b></h1>
 
-        <h3>You are viewing the full details for: </h3>
-        <h1><b><u>{{ movie }}</u></b></h1>
-
-        <table align='center' style="width:33%" border='1'>
-            <tr height='30'>
-                <th><u>Released</u>:</th>
-                <td>{{ movie.release }}</td>
+        <table align='center' style="width:20%" border='1'>
+            <tr align='center' height='25'>
+                <th><u>Age</u>:</th>
+                <td>{{ rater.age }}</td>
             </tr>
-            <tr height='30'>
-                <th><u>Website</u>:</th>
-                <td><a href={{ movie.url }}><img src="http://movse.tv/wp-content/themes/movse/images/logo-imdb.svg" alt="IMDB" /></a></td>
+            <tr align='center' height='25'>
+                <th><u>Sex</u>:</th>
+                <td>{{ rater.sex }}</td>
+            </tr>
+            <tr align='center' height='25'>
+                <th><u>Occupation</u>:</th>
+                <td>{{ rater.occupation }}</td>
             </tr>
         </table>
+        <br>
 
-        <br><hr>
-
-        <h2><u><font size='5'>All Ratings</font></u></h2>
+        <h2 align='center'><u><font size='5'>All Ratings</font></u></h2>
 
         <table align='center' cellpadding='5'>
             <tr align='left' height='25'>
-                <th><u>Average Rating</u>:</th>
-                <td width='50'>{{ movie.avg_rating }}</td>
+                <th><u>Average Rating Given</u>:</th>
+                <td align='center' width='50'>{{ rater.avg_rating }}</td>
                 <td align='left'>|</td>
                 <th><u>Total Number of Ratings</u>:</th>
-                <td width='50'>{{ movie.total_ratings }}</td>
+                <td align='center' width='50'>{{ rater.total_ratings }}</td>
             </tr>
         </table>
 
-        <p>***If you want to see more information on the ratings, simply click the rater's information***</p>
+        <p align='center'>***If you want to see more information on the ratings, simply click the rater's information***</p>
 
-        <table align='center' cellpadding='5' border='1' style='width:15%'>
+        <table align='center' cellpadding='5' border='1'>
             <tr>
-                <th>Rater</th>
+                <th>Movie</th>
                 <th>Score</th>
             </tr>
             {% for rating in ratings %}
-            <tr>
-                <td><a href="{% url 'ratings:rater_detail' rating.rater_id %}">{{rating.rater_id}}</a></td>
+
+            <tr align='center'>
+                <td><a href="{% url 'ratings:movie_detail' rating.movie_id %}">{{rating.movie_name}}</a></td>
                 <td>{{rating.score}}</td>
             </tr>
             {% endfor %}

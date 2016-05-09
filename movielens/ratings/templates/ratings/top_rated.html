@@ -4,10 +4,23 @@
         <meta charset="utf-8">
         <title>Top Rated Movies</title>
     </head>
-    <body>
-        <h3><u>Top 20 movies</u></h3>
-        <p></p>
-        <table border=1>
+    <body align='center'>
+        <div>
+            <span>
+                <a href='http://127.0.0.1:8000/ratings/'><button style="height:30px;width:150px"><font size='3'>Home</font></button></a>
+            </span>
+            <span>
+                <a href='http://127.0.0.1:8000/ratings/movies/'><button style="height:30px;width:150px"><font size='3'>Full Movie List</font></button></a>
+            </span>
+            <span>
+                <a href='http://127.0.0.1:8000/ratings/raters/'><button style="height:30px;width:150px"><font size='3'>User Information</font></button></a>
+            </span>
+        </div>
+        <hr>
+        <h1><u>Top 20 movies</u></h1>
+        <p>***If you want to see more information on a movie and its ratings, simply click its title***</p>
+        <br>
+        <table border=1 align='center'>
             <tr>
                 {% for header in columns %}
                 <td><b>{{ header }}</b></td>
@@ -15,20 +28,13 @@
             </tr>
             {% for movie in top_rated %}
             <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'ratings:movie_detail' movie.id %}">{{ movie.title }}</a></td>
                 <td>{{ movie.avg_rating }}</td>
-                <td>{{ movie.title }}</td>
-                <td>{{ movie.release }}</td>
                 <td>{{ movie.total_ratings }}</td>
-                <td><a href={{ movie.url }}><button>IMDB</button></a></td>
+                <td><a href={{ movie.url }}><img src="http://movse.tv/wp-content/themes/movse/images/logo-imdb.svg" alt="IMDB" /></a></td>
             </tr>
             {% endfor %}
         </table>
-        <p></p>
-        <span>
-            <a href='http://127.0.0.1:8000/ratings/top/'><button>Top Rated Movies</button></a>
-        </span>
-        <span>
-            <a href='http://127.0.0.1:8000/ratings/raters/'><button>User Information</button></a>
-        </span>
     </body>
 </html>

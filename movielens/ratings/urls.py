@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from django.views.generic.base import RedirectView
 
 from . import views
 
@@ -8,7 +7,7 @@ app_name = 'ratings'
 urlpatterns = [
     # url(r'^$', views.index, name='index'),
 
-    url(r'^$', RedirectView.as_view(url='/', permanent=False), name='redirect'),
+    url(r'^$', views.home, name='home'),
 
     url(r'^(?P<name>\w+)/$', views.index, name='page'),
 

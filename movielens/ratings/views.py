@@ -1,44 +1,51 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Movie, Rater, Rating
+
+
+def home(request):
+    pages = ['movies', 'raters', 'top']
+    context = {'pages': pages}
+    return render(request, 'ratings/home.html', context)
 
 
 def index(request, name):
     movies = Movie.objects.all().order_by('title')
-    movie_cols = ['Title', 'Release Date', 'Average Rating', 'Total Ratings',
-                  'URL']
+
+
+    raters = Rater.objects.all()
+
     top_rated = Movie.get_top()
+
     if name == 'movies':
+        movie_cols = ['Title', 'Average Rating', 'URL']
         context = {'movies': movies, 'columns': movie_cols}
-        return render(request, 'ratings/movies_index.html', context)
+        return render(request, 'ratings/movie_index.html', context)
+
     elif name == 'raters':
-        pass
+        context = {'raters': raters, 'columns': ['ID', 'Age', 'Sex',
+                   'Occupation', 'Movies Rated']}
+        return render(request, 'ratings/rater_index.html', context)
+
     elif name == 'top':
-        movie_cols = ['Average Rating', 'Title', 'Release Date', 'Total Ratings', 'URL']
-        context = {'top_rated': top_rated, 'columns': movie_cols}
+        rank = 1
+        movie_cols = ['Rank', 'Title', 'Average Rating', 'Total Ratings', 'URL']
+        context = {'top_rated': top_rated, 'columns': movie_cols, 'rank': rank}
         return render(request, 'ratings/top_rated.html', context)
+
     else:
         return render(request, 'ratings/redirect.html')
 
 
-def movie_index(request):
-    return HttpResponse("""For now, enter a movie ID after '.../movies/' in your
-                        browser to find movie info.""")
-
-
 def movie_detail(request, movie):
-    return HttpResponse("You're looking at the movie details for %s." % movie)
-
-
-def rater_index(request):
-    return HttpResponse("""For now, enter a movie ID after '.../raters/' in your
-                        browser to find rater info.""")
+    movie = get_object_or_404(Movie, id=movie)
+    ratings = Rating.objects.filter(movie_id=movie)
+    context = {'movie': movie, 'ratings': ratings}
+    return render(request, 'ratings/movie_detail.html', context)
 
 
 def rater_detail(request, rater):
-    return HttpResponse("You're looking at the rater details for rater #%s."
-                        % rater)
-
-
-def top_detail(request):
-    return HttpResponse("This will display the top movies.")
+    rater = get_object_or_404(Rater, id=rater)
+    ratings = Rating.objects.filter(rater_id=rater)
+    context = {'rater': rater, 'ratings': ratings}
+    return render(request, 'ratings/rater_detail.html', context)
