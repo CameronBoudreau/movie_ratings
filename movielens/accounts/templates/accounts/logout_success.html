@@ -6,22 +6,12 @@
     </head>
     <body align='center'>
         <div>
+            <h1>You have successfully logged out. Please continue browsing the database via the links below!</h1>
             <br><br>
-            <a href='http://127.0.0.1:8000/ratings/movies/'><button style="height:75px;width:200px"><font size='3'>Full Movie List</font></button></a>
-            <br><br><br><br>
-            <a href='http://127.0.0.1:8000/ratings/top/'><button style="height:75px;width:200px"><font size='3'>Top Rated Movies</font></button></a>
-            <br><br><br><br>
-            <a href='http://127.0.0.1:8000/ratings/raters/'><button style="height:75px;width:200px"><font size='3'>User Information</font></button></a>
-            <br><br><br><br>
-            {% if is_authenticated %}
-            <span>
-            <a href="{% url "django.contrib.auth.views.logout" %}?next=/accounts/logout_success/"><button style="height:75px;width:200px"><font size='3'>Logout</font></button></a>
-            </span>
-            {% else %}
-            <span>
             <a href='http://127.0.0.1:8000/login'><button style="height:75px;width:200px"><font size='3'>Login</font></button></a>
-            </span>
-            {% endif %}
+            <a href='http://127.0.0.1:8000/ratings/movies/'><button style="height:75px;width:200px"><font size='3'>Full Movie List</font></button></a>
+            <a href='http://127.0.0.1:8000/ratings/top/'><button style="height:75px;width:200px"><font size='3'>Top Rated Movies</font></button></a>
+            <a href='http://127.0.0.1:8000/ratings/raters/'><button style="height:75px;width:200px"><font size='3'>User Information</font></button></a>
         </div>
     </body>
 </html>

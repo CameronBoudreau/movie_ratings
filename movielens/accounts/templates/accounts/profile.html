@@ -1,0 +1,29 @@
+<div align='center'>
+    <span>
+        <a href='http://127.0.0.1:8000/ratings/'><button style="height:30px;width:150px"><font size='3'>Home</font></button></a>
+    </span>
+    <span>
+        <a href='http://127.0.0.1:8000/ratings/movies/'><button style="height:30px;width:150px"><font size='3'>Full Movie List</font></button></a>
+    </span>
+    <span>
+        <a href='http://127.0.0.1:8000/ratings/top/'><button style="height:30px;width:150px"><font size='3'>Top Rated Movies</font></button></a>
+    </span>
+    <span>
+        <a href='http://127.0.0.1:8000/ratings/raters/'><button style="height:30px;width:150px"><font size='3'>User Information</font></button></a>
+    </span>
+    {% if is_authenticated %}
+    <span>
+    <a href="{% url "django.contrib.auth.views.logout" %}?next=/accounts/logout_success/"><button style="height:30px;width:150px"><font size='3'>Logout</font></button></a>
+    </span>
+</div>
+
+<hr><br>
+
+<h1 align='center'>You are logged in as {{ username }}</h1>
+
+{% else %}
+<hr><br>
+<h1 align='center'>You are not logged in.<br>Please click the button below to return to the login page.</h1>
+<a href="http://127.0.0.1:8000/login"><button style="height:50px;width:250px"><font size='3'>Return to Login<font></button></a>
+
+{% endif %}

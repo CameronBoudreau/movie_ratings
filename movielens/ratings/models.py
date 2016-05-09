@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Avg, Count
+from django.contrib.auth.models import User
 
 
 class Movie(models.Model):
@@ -33,6 +34,7 @@ class Movie(models.Model):
 
 
 class Rater(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     age = models.IntegerField(default=0)
     sex = models.CharField(max_length=200, default="-")
     occupation = models.CharField(max_length=200, default="Not given")
