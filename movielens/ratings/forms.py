@@ -1,9 +1,7 @@
-from djang import forms
-
-from.models import Movie, Rater, ratings
+from django import forms
 
 
-class MovieForm(forms.ModelForm):
+class SearchForm(forms.ModelForm):
     class Meta:
         model = Movie
         fields = ('title', 'release', 'url')

@@ -10,6 +10,5 @@ urlpatterns = [
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^ratings/', include('ratings.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'accounts/', include('accounts.urls'))
-
+    url(r'^accounts/', include('accounts.urls'))
 ]

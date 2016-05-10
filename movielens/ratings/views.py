@@ -1,42 +1,50 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
 from .models import Movie, Rater, Rating
 
 
 def home(request):
     pages = ['movies', 'raters', 'top']
-    context = {'is_authenticated': request.user.is_authenticated(), 'pages': pages}
+    context = {'is_authenticated': request.user.is_authenticated(),
+               'pages': pages}
     return render(request, 'ratings/home.html', context)
 
 
-def index(request, name):
-    movies = Movie.objects.all().order_by('title')
+def movie_index(request):
+    search = False
+    all_movies = Movie.objects.all().order_by('title')
+    movie_cols = ['Title', 'Average Rating', 'URL']
+    context = {'all_movies': all_movies, 'columns': movie_cols,
+               'is_authenticated': request.user.is_authenticated()}
+    if 'q' in request.GET and request.GET['q']:
+        search = True
+        q = request.GET['q']
+        movies = Movie.objects.filter(title__icontains=q)
+        message = 'You searched for: %r' % request.GET['q']
+        context = {'message': message, 'query': q,
+                   'movies': movies.order_by('title'),
+                   'all_movies': all_movies.order_by('title'),
+                   'columns': movie_cols,
+                   'is_authenticated': request.user.is_authenticated(),
+                   'search': search}
+    return render(request, 'ratings/movie_index.html', context)
 
+
+def rater_index(request):
     raters = Rater.objects.all()
+    context = {'is_authenticated': request.user.is_authenticated(),
+               'raters': raters, 'columns': ['ID', 'Age', 'Sex',
+                                             'Occupation', 'Movies Rated']}
+    return render(request, 'ratings/rater_index.html', context)
 
+
+def top_rated(request):
     top_rated = Movie.get_top()
-
-    if name == 'movies':
-        movie_cols = ['Title', 'Average Rating', 'URL']
-        context = {'movies': movies, 'columns': movie_cols,
-                   'is_authenticated': request.user.is_authenticated()}
-        return render(request, 'ratings/movie_index.html', context)
-
-    elif name == 'raters':
-        context = {'is_authenticated': request.user.is_authenticated(),
-                   'raters': raters, 'columns': ['ID', 'Age', 'Sex',
-                                                 'Occupation', 'Movies Rated']}
-        return render(request, 'ratings/rater_index.html', context)
-
-    elif name == 'top':
-        rank = 1
-        movie_cols = ['Rank', 'Title', 'Average Rating',
-                      'Total Ratings', 'URL']
-        context = {'is_authenticated': request.user.is_authenticated(),
-                   'top_rated': top_rated, 'columns': movie_cols, 'rank': rank}
-        return render(request, 'ratings/top_rated.html', context)
-
-    else:
-        return render(request, 'ratings/redirect.html')
+    movie_cols = ['Rank', 'Title', 'Average Rating',
+                  'Total Ratings', 'URL']
+    context = {'is_authenticated': request.user.is_authenticated(),
+               'top_rated': top_rated, 'columns': movie_cols}
+    return render(request, 'ratings/top_rated.html', context)
 
 
 def movie_detail(request, movie):

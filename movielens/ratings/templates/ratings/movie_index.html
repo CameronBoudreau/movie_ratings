@@ -1,35 +1,72 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Movies Index</title>
-    </head>
-    <body align='center'>
-        <div>
-            <span>
-                <a href='http://127.0.0.1:8000/ratings/'><button style="height:30px;width:150px"><font size='3'>Home</font></button></a>
-            </span>
-            <span>
-                <a href='http://127.0.0.1:8000/ratings/top/'><button style="height:30px;width:150px"><font size='3'>Top Rated Movies</font></button></a>
-            </span>
-            <span>
-                <a href='http://127.0.0.1:8000/ratings/raters/'><button style="height:30px;width:150px"><font size='3'>User Information</font></button></a>
-            </span>
-            {% if is_authenticated %}
-            <span>
-            <a href="{% url "django.contrib.auth.views.logout" %}?next=/accounts/logout_success/"><button style="height:30px;width:150px"><font size='3'>Logout</font></button></a>
-            </span>
-            {% else %}
-            <span>
-            <a href='http://127.0.0.1:8000/login'><button style="height:30px;width:150px"><font size='3'>Login</font></button></a>
-            </span>
-            {% endif %}
-        </div>
+  <head>
+      <title>Movie Search</title>
+  </head>
+  <body align='center'>
 
+      <div>
+          <span>
+              <a href='http://127.0.0.1:8000/ratings/'><button style="height:30px;width:150px"><font size='3'>Home</font></button></a>
+          </span>
+          <span>
+              <a href='http://127.0.0.1:8000/ratings/movies/'><button style="height:30px;width:150px"><font size='3'>Full Movie List</font></button></a>
+          </span>
+          <span>
+              <a href='http://127.0.0.1:8000/ratings/top/'><button style="height:30px;width:150px"><font size='3'>Top Rated Movies</font></button></a>
+          </span>
+          <span>
+              <a href='http://127.0.0.1:8000/ratings/raters/'><button style="height:30px;width:150px"><font size='3'>User Information</font></button></a>
+          </span>
+          {% if is_authenticated %}
+          <span>
+          <a href="{% url "django.contrib.auth.views.logout" %}?next=/accounts/logout_success/"><button style="height:30px;width:150px"><font size='3'>Logout</font></button></a>
+          </span>
+          {% else %}
+          <span>
+          <a href='http://127.0.0.1:8000/login'><button style="height:30px;width:150px"><font size='3'>Login</font></button></a>
+          </span>
+          {% endif %}
+      </div>
+      <hr>
+
+    {% if movies %}
+
+        <h1>Viewing {{ movies|length }} movie{{ movies|pluralize }} matching: <strong>'{{ query  }}'</strong><h1>
         <hr>
-        <h1>You are viewing the full list of movies.</h1>
-        <p>***If you want to see more information on a movie and its ratings, simply click its title***</p>
-        <br>
+
+        <form action="/ratings/movies/" method="get">
+            <input type="text" name="q">
+            <input type="submit" value="Search">
+        </form>
+        <table align='center' border='1'>
+            <tr align='center'>
+                {% for header in columns %}
+                <td><b>{{ header }}</b></td>
+                {% endfor %}
+            </tr>
+            {% for movie in movies %}
+            <tr align='center'>
+                <td><a href="{% url 'ratings:movie_detail' movie.id %}">{{ movie.title }}</a></td>
+                <td>{{ movie.avg_rating }}</td>
+                <td><a href={{ movie.url }}><img src="http://movse.tv/wp-content/themes/movse/images/logo-imdb.svg" alt="IMDB" /></a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+
+    <h1>You are viewing the full list of movies.</h1>
+    <p>***If you want to see more information on a movie and its ratings, simply click its title***</p>
+    <hr>
+    {% if search %}
+    <p><font size='4px'>You searched for: <strong><font size='5px'>{{ query  }}</strong></font></font></p>
+    <p>No movies matched your search criteria.</p>
+    <hr><br>
+    {% endif %}
+        <form action="/ratings/movies/search/" method="get">
+            <input type="text" name="q">
+            <input type="submit" value="Search">
+        </form>
 
         <div>
             <table border=1 align='center'>
@@ -38,7 +75,7 @@
                     <td><b>{{ header }}</b></td>
                     {% endfor %}
                 </tr>
-                {% for movie in movies %}
+                {% for movie in all_movies %}
                 <tr>
                     <td><a href="{% url 'ratings:movie_detail' movie.id %}">{{ movie.title }}</a></td>
                     <td>{{ movie.avg_rating }}</td>
@@ -47,5 +84,7 @@
                 {% endfor %}
             </table>
         </div>
-    </body>
+    {% endif %}
+
+  </body>
 </html>

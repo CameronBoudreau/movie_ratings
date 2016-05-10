@@ -12,3 +12,8 @@ def profile(request):
 
 def logout_success(request):
     return render(request, 'accounts/logout_success.html')
+
+
+def create_user(request):
+    context = {'form': RegisterForm()}
+    return render(request, 'accounts/create_user.html', context)
