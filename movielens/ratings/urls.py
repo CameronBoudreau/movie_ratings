@@ -14,6 +14,5 @@ urlpatterns = [
     url(r'^raters/(?P<rater>[0-9]+)$', views.rater_detail,
         name='rater_detail'),
     url(r'^top/$', views.top_rated, name="top_rated"),
-    url(r'^new/$', views.new),
     url(r'^movies/search/$', views.movie_index, name='movie_search')
 ]

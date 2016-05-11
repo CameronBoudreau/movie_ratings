@@ -17,7 +17,8 @@ class Movie(models.Model):
         return Rating.objects.filter(movie_id=self.id).aggregate(Avg('score'))
 
     def get_total(self):
-        return Rating.objects.filter(movie_id=self.id).aggregate(Count('score'))
+        ratings = Rating.objects.filter(movie_id=self.id)
+        return ratings.aggregate(Count('score'))
 
     @staticmethod
     def get_top(num=20):
@@ -36,8 +37,8 @@ class Movie(models.Model):
 class Rater(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     age = models.IntegerField(default=0)
-    sex = models.CharField(max_length=200, default="-")
-    occupation = models.CharField(max_length=200, default="Not given")
+    sex = models.CharField(max_length=200, default="")
+    occupation = models.CharField(max_length=200, default="")
     avg_rating = models.DecimalField(decimal_places=2, max_digits=3, default=0)
     total_ratings = models.IntegerField(default=0)
 
@@ -49,7 +50,8 @@ class Rater(models.Model):
         return Rating.objects.filter(rater_id=self.id).aggregate(Avg('score'))
 
     def get_total(self):
-        return Rating.objects.filter(rater_id=self.id).aggregate(Count('score'))
+        rating = Rating.objects.filter(rater_id=self.id)
+        return rating.aggregate(Count('score'))
 
 
 class Rating(models.Model):

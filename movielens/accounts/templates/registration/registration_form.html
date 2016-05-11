@@ -1,0 +1,11 @@
+{% block title %}Create an account{% endblock %}
+
+{% block content %}
+
+  <form action="" method="POST">
+      {% csrf_token %}
+      {{ user_form.as_p }}
+      {{ rater_form.as_p }}
+      <input type="submit" value="Create">
+  </form>
+{% endblock %}

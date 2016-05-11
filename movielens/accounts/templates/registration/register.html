@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Create Account</title>
+    </head>
+    <body>
+        <h1>Create an account</h1>
+
+        <div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ rater_form.as_p }}
+                <input type="submit" value="Create">
+            </form>
+        </div>
+    </body>
+</html>

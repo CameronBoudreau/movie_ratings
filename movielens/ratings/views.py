@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from .models import Movie, Rater, Rating
 
 
@@ -61,7 +60,3 @@ def rater_detail(request, rater):
     context = {'is_authenticated': request.user.is_authenticated(),
                'rater': rater, 'ratings': ratings}
     return render(request, 'ratings/rater_detail.html', context)
-
-
-def new(request, rater):
-    pass
